@@ -17,12 +17,17 @@
  *
  * @package WordPress
  */
-
-// ** MySQL settings - You can get this info from your web host ** //
-define( 'DB_NAME', getenv('DB_NAME') );		// The name of the database for WordPress
-define( 'DB_USER', getenv('DB_USER') ); 	// MySQL database username
-define( 'DB_PASSWORD', getenv('DB_PASSWORD') ); 	// MySQL database password
-define( 'DB_HOST', getenv('DB_HOST') ); 	// MySQL hostname
+define('WP_CACHE', true);
+// 获取域名将‘.’替换成‘_’当作数据库名称，减少人工创建域名和数据库名称的绑定
+$url=$_SERVER['SERVER_NAME'];
+preg_match('/[\w][\w-]*\.(?:com\.cn|com|cn|co|net|org|gov|cc|biz|info)(\/|$)/isU', $url, $domain);
+$u=$domain[0];
+$DB_NAME=implode('_',explode('.',$url));
+// ** MySQL settings - 数据名称、用户名、账号相关信息 ** //
+define( 'DB_NAME', $DB_NAME);		// 由域名赋值
+define( 'DB_USER', $DB_NAME); 	// MySQL 获取用户名
+define( 'DB_PASSWORD', getenv('DB_PASSWORD') ); 	// 获取密码
+define( 'DB_HOST', getenv('DB_HOST') ); 	// MySQL 获取google cloud run sql主机名称
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
@@ -90,3 +95,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
+
+
